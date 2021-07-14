@@ -4,6 +4,7 @@ use std::{collections::HashMap, convert::TryFrom, convert::TryInto};
 use wasmtime::*;
 
 pub mod builtins;
+pub mod evaluation_result;
 pub mod wasm;
 
 /// StackHelper provides a set of helper methods to share data
@@ -257,7 +258,7 @@ impl Policy {
         mut store: impl AsContextMut,
         memory: &Memory,
         input: &serde_json::Value,
-    ) -> Result<serde_json::Value> {
+    ) -> Result<Vec<evaluation_result::EvaluationResult>> {
         // Reset the heap pointer before each evaluation
         self.opa_heap_ptr_set_fn
             .call(store.as_context_mut(), self.data_heap_ptr)?;
@@ -283,7 +284,12 @@ impl Policy {
         let res_addr = self
             .opa_eval_ctx_get_result_fn
             .call(store.as_context_mut(), ctx_addr)?;
-        self.stack_helper
-            .pull_json(store.as_context_mut(), &memory, res_addr)
+
+        serde_json::from_value(self.stack_helper.pull_json(
+            store.as_context_mut(),
+            &memory,
+            res_addr,
+        )?)
+        .map_err(|e| anyhow!("could not unmarshal result: {}", e))
     }
 }
