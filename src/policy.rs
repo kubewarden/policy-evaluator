@@ -14,6 +14,7 @@ use crate::callback_requests::CallbackRequest;
 #[derive(Clone)]
 pub struct Policy {
     pub id: String,
+    pub mutating: bool,
     policy_id: Option<u64>,
     /// Channel used by the synchronous world (the `host_callback` waPC function),
     /// to request the computation of code that can only be run inside of an
@@ -56,11 +57,13 @@ impl Default for Policy {
 impl Policy {
     pub(crate) fn new(
         id: String,
+        mutating: bool,
         policy_id: Option<u64>,
         callback_channel: Option<mpsc::Sender<CallbackRequest>>,
     ) -> Result<Policy> {
         Ok(Policy {
             id,
+            mutating,
             policy_id,
             callback_channel,
         })

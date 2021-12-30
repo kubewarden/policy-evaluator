@@ -9,6 +9,7 @@ use crate::policy_evaluator::{PolicyEvaluator, PolicyExecutionMode};
 #[derive(Default)]
 pub struct PolicyEvaluatorBuilder {
     policy_id: String,
+    mutating: bool,
     policy_file: Option<String>,
     policy_contents: Option<Vec<u8>>,
     execution_mode: Option<PolicyExecutionMode>,
@@ -19,9 +20,10 @@ pub struct PolicyEvaluatorBuilder {
 impl PolicyEvaluatorBuilder {
     /// Create a new PolicyEvaluatorBuilder object. The `policy_id` must be
     /// specified.
-    pub fn new(policy_id: String) -> PolicyEvaluatorBuilder {
+    pub fn new(policy_id: String, mutating: bool) -> PolicyEvaluatorBuilder {
         PolicyEvaluatorBuilder {
             policy_id,
+            mutating,
             ..Default::default()
         }
     }
@@ -97,6 +99,7 @@ impl PolicyEvaluatorBuilder {
 
         PolicyEvaluator::new(
             self.policy_id,
+            self.mutating,
             contents,
             mode,
             self.settings,

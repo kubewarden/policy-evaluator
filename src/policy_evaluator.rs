@@ -115,6 +115,7 @@ impl PolicyEvaluator {
     /// `PolicyEvaluatorBuilder` instead.
     pub(crate) fn new(
         id: String,
+        mutating: bool,
         policy_contents: Vec<u8>,
         policy_execution_mode: PolicyExecutionMode,
         settings: Option<serde_json::Map<String, serde_json::Value>>,
@@ -126,6 +127,7 @@ impl PolicyEvaluator {
                 let wapc_host = WapcHost::new(Box::new(engine), wapc_callback)?;
                 let policy = PolicyEvaluator::from_contents_internal(
                     id,
+                    mutating,
                     callback_channel,
                     || Some(wapc_host.id()),
                     Policy::new,
@@ -138,6 +140,7 @@ impl PolicyEvaluator {
             PolicyExecutionMode::Opa | PolicyExecutionMode::OpaGatekeeper => {
                 let policy = PolicyEvaluator::from_contents_internal(
                     id.clone(),
+                    mutating,
                     callback_channel,
                     || None,
                     Policy::new,
@@ -166,6 +169,7 @@ impl PolicyEvaluator {
 
     fn from_contents_internal<E, P>(
         id: String,
+        mutating: bool,
         callback_channel: Option<mpsc::Sender<CallbackRequest>>,
         engine_initializer: E,
         policy_initializer: P,
@@ -173,10 +177,10 @@ impl PolicyEvaluator {
     ) -> Result<Policy>
     where
         E: Fn() -> Option<u64>,
-        P: Fn(String, Option<u64>, Option<mpsc::Sender<CallbackRequest>>) -> Result<Policy>,
+        P: Fn(String, bool, Option<u64>, Option<mpsc::Sender<CallbackRequest>>) -> Result<Policy>,
     {
         let policy_id = engine_initializer();
-        let policy = policy_initializer(id, policy_id, callback_channel)?;
+        let policy = policy_initializer(id, mutating, policy_id, callback_channel)?;
         if policy_execution_mode == PolicyExecutionMode::KubewardenWapc {
             WAPC_POLICY_MAPPING.write().unwrap().insert(
                 policy_id.ok_or_else(|| anyhow!("invalid policy id"))?,
