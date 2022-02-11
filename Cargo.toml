@@ -37,7 +37,7 @@ wasmparser = "0.82.0"
 # dependencies to the same tag. Otherwise, traits that are shared by
 # both crates are considered different. This can be removed once a new
 # version of `wapc` has been pushed to crates.io.
-wapc = { git = "https://github.com/wapc/wapc-rs", tag = "wapc@1.0.0-alpha.1" }
+wapc = { git = "https://github.com/wapc/wapc-rs", tag = "wapc@1.0.0" }
 wasmtime-provider = { git = "https://github.com/wapc/wapc-rs", tag = "wapc@1.0.0-alpha.1" }
 
 [dev-dependencies]
