@@ -9,15 +9,15 @@ use time::OffsetDateTime;
 use url::Url;
 
 use crate::constants::{
-    ARTIFACTHUB_ANNOTATION_KUBEWARDEN_CONTEXTAWARE, ARTIFACTHUB_ANNOTATION_KUBEWARDEN_MUTATION,
-    ARTIFACTHUB_ANNOTATION_KUBEWARDEN_QUESTIONSUI, ARTIFACTHUB_ANNOTATION_KUBEWARDEN_RESOURCES,
-    ARTIFACTHUB_ANNOTATION_KUBEWARDEN_RULES, ARTIFACTHUB_ANNOTATION_RANCHER_HIDDENUI,
-    KUBEWARDEN_ANNOTATION_ARTIFACTHUB_DISPLAYNAME, KUBEWARDEN_ANNOTATION_ARTIFACTHUB_HIDDENUI,
-    KUBEWARDEN_ANNOTATION_ARTIFACTHUB_KEYWORDS, KUBEWARDEN_ANNOTATION_ARTIFACTHUB_RESOURCES,
-    KUBEWARDEN_ANNOTATION_POLICY_AUTHOR, KUBEWARDEN_ANNOTATION_POLICY_DESCRIPTION,
-    KUBEWARDEN_ANNOTATION_POLICY_LICENSE, KUBEWARDEN_ANNOTATION_POLICY_OCIURL,
-    KUBEWARDEN_ANNOTATION_POLICY_SOURCE, KUBEWARDEN_ANNOTATION_POLICY_TITLE,
-    KUBEWARDEN_ANNOTATION_POLICY_URL,
+    ARTIFACTHUB_ANNOTATION_KUBEWARDEN_CONTEXTAWARE_RESOURCES,
+    ARTIFACTHUB_ANNOTATION_KUBEWARDEN_MUTATION, ARTIFACTHUB_ANNOTATION_KUBEWARDEN_QUESTIONSUI,
+    ARTIFACTHUB_ANNOTATION_KUBEWARDEN_RESOURCES, ARTIFACTHUB_ANNOTATION_KUBEWARDEN_RULES,
+    ARTIFACTHUB_ANNOTATION_RANCHER_HIDDENUI, KUBEWARDEN_ANNOTATION_ARTIFACTHUB_DISPLAYNAME,
+    KUBEWARDEN_ANNOTATION_ARTIFACTHUB_HIDDENUI, KUBEWARDEN_ANNOTATION_ARTIFACTHUB_KEYWORDS,
+    KUBEWARDEN_ANNOTATION_ARTIFACTHUB_RESOURCES, KUBEWARDEN_ANNOTATION_POLICY_AUTHOR,
+    KUBEWARDEN_ANNOTATION_POLICY_DESCRIPTION, KUBEWARDEN_ANNOTATION_POLICY_LICENSE,
+    KUBEWARDEN_ANNOTATION_POLICY_OCIURL, KUBEWARDEN_ANNOTATION_POLICY_SOURCE,
+    KUBEWARDEN_ANNOTATION_POLICY_TITLE, KUBEWARDEN_ANNOTATION_POLICY_URL,
 };
 use crate::errors::ArtifactHubError;
 use crate::policy_metadata::Metadata;
@@ -410,10 +410,13 @@ fn parse_annotations(
         ARTIFACTHUB_ANNOTATION_KUBEWARDEN_MUTATION.to_string(),
         metadata.mutating.to_string(),
     );
-    annotations.insert(
-        ARTIFACTHUB_ANNOTATION_KUBEWARDEN_CONTEXTAWARE.to_string(),
-        metadata.context_aware.to_string(),
-    );
+    if !metadata.context_aware_resources.is_empty() {
+        annotations.insert(
+            ARTIFACTHUB_ANNOTATION_KUBEWARDEN_CONTEXTAWARE_RESOURCES.to_string(),
+            serde_yaml::to_string(&metadata.context_aware_resources)
+                .expect("cannot convert context_aware_resources to yaml"),
+        );
+    }
     annotations.insert(
         ARTIFACTHUB_ANNOTATION_KUBEWARDEN_RULES.to_string(),
         serde_yaml::to_string(&metadata.rules).unwrap(),
@@ -449,9 +452,10 @@ fn parse_annotations(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::policy_metadata::ContextAwareResource;
     use assert_json_diff::assert_json_eq;
     use serde_json::json;
-    use std::collections::HashMap;
+    use std::collections::{HashMap, HashSet};
 
     fn mock_metadata_with_minimum_required() -> Metadata {
         Metadata {
@@ -481,12 +485,18 @@ mod tests {
             ])),
             mutating: false,
             background_audit: true,
-            context_aware: false,
+            context_aware_resources: HashSet::new(),
             execution_mode: Default::default(),
         }
     }
 
     fn mock_metadata_with_all() -> Metadata {
+        let mut context_aware_resources: HashSet<ContextAwareResource> = HashSet::new();
+        context_aware_resources.insert(ContextAwareResource {
+            api_version: "v1".to_string(),
+            kind: "Pod".to_string(),
+        });
+
         Metadata {
             protocol_version: None,
             rules: vec![],
@@ -538,7 +548,7 @@ mod tests {
             ])),
             mutating: false,
             background_audit: true,
-            context_aware: false,
+            context_aware_resources,
             execution_mode: Default::default(),
         }
     }
@@ -768,7 +778,6 @@ mod tests {
             "description": "A description",
             "annotations": {
                 "kubewarden/mutation": "false",
-                "kubewarden/contextAware": "false",
                 "kubewarden/rules": "[]\n",
                 "kubewarden/resources": "Pod, Deployment",
             },
@@ -851,7 +860,7 @@ mod tests {
             "annotations": {
                 "kubewarden/resources": "Pod, Deployment",
                 "kubewarden/mutation": "false",
-                "kubewarden/contextAware": "false",
+                "kubewarden/contextAwareResources": "- apiVersion: v1\n  kind: Pod\n",
                 "kubewarden/hidden-ui": "true",
                 "kubewarden/rules": "[]\n",
                 "kubewarden/questions-ui": "questions contents"
