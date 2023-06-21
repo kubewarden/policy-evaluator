@@ -37,7 +37,7 @@ url = { version = "2.2", features = ["serde"] }
 validator = { version = "0.16", features = ["derive"] }
 wasmparser = "0.107"
 wapc = "1.0.0"
-wasmtime          = "9.0"
+wasmtime          = "10.0"
 wasmtime-wasi     = "9.0"
 wasi-common       = "9.0"
 wasi-cap-std-sync = "9.0"
