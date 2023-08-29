@@ -52,7 +52,7 @@ thiserror = "1.0"
 
 [workspace.dependencies]
 wasmtime          = "11.0"
-wasmtime-wasi     = "11.0"
+wasmtime-wasi     = "12.0"
 wasi-common       = "11.0"
 wasi-cap-std-sync = "11.0"
 
