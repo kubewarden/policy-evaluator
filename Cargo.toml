@@ -58,7 +58,7 @@ wasmtime-wasi = { workspace = true }
 wasi-cap-std-sync = "12.0"
 wasi-common = "12.0"
 wasmtime = "12.0"
-wasmtime-wasi = "12.0"
+wasmtime-wasi = "13.0"
 
 [dev-dependencies]
 assert-json-diff = "2.0"
