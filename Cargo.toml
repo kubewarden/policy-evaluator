@@ -74,4 +74,4 @@ test-context = "0.1"
 tempfile = "3.8.1"
 tower-test = "0.4"
 # kube-rs mocking requires tower-test v0.14.x
-hyper = { version = "^0.14.28" }
+hyper = { version = "^1.1.0" }
