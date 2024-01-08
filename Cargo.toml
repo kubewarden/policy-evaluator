@@ -57,7 +57,7 @@ wasmtime-wasi = { workspace = true }
 [workspace.dependencies]
 wasi-cap-std-sync = "15.0"
 wasi-common = "15.0"
-wasmtime = "15.0"
+wasmtime = "16.0"
 wasmtime-wasi = "15.0"
 
 [dev-dependencies]
