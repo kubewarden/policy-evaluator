@@ -27,15 +27,15 @@ pub enum Operation {
 #[derive(Deserialize, Serialize, Debug, Clone, Validate)]
 #[serde(rename_all = "camelCase")]
 pub struct Rule {
-    #[validate(length(min = 1), custom = "validate_asterisk_usage")]
+    #[validate(length(min = 1), custom(function = "validate_asterisk_usage"))]
     pub api_groups: Vec<String>,
-    #[validate(length(min = 1), custom = "validate_asterisk_usage")]
+    #[validate(length(min = 1), custom(function = "validate_asterisk_usage"))]
     pub api_versions: Vec<String>,
-    #[validate(length(min = 1), custom = "validate_resources")]
+    #[validate(length(min = 1), custom(function = "validate_resources"))]
     pub resources: Vec<String>,
     #[validate(
         length(min = 1),
-        custom = "validate_asterisk_usage_inside_of_operations"
+        custom(function = "validate_asterisk_usage_inside_of_operations")
     )]
     pub operations: Vec<Operation>,
 }
