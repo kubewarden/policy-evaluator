@@ -63,7 +63,7 @@ wasmtime-wasi = "19.0"
 assert-json-diff = "2.0"
 test-log = "0.2.15"
 k8s-openapi = { version = "0.22.0", default-features = false, features = [
-  "v1_28",
+  "v1_30",
 ] }
 rstest = "0.19"
 serial_test = "3.0"
