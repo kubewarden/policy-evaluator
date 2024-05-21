@@ -53,7 +53,7 @@ wasi-common = { workspace = true }
 wasmparser = "0.208"
 wasmtime = { workspace = true }
 # wasmtime-provider = { version = "1.16", features = ["cache"] }
-wasmtime-provider = { git = "https://github.com/wapc/wapc-rs.git", tag = "wasmtime-provider-v1.17.0", features = [
+wasmtime-provider = { git = "https://github.com/wapc/wapc-rs.git", tag = "wasmtime-provider-v1.130.0", features = [
   "cache",
 ] }
 wasmtime-wasi = { workspace = true }
