@@ -48,7 +48,7 @@ tracing = "0.1"
 url = { version = "2.2", features = ["serde"] }
 validator = { version = "0.18", features = ["derive"] }
 #wapc = "1.1"
-wapc = { git = "https://github.com/wapc/wapc-rs.git", tag = "wasmtime-provider-v1.17.0" }
+wapc = { git = "https://github.com/wapc/wapc-rs.git", tag = "wasmtime-provider-v1.130.0" }
 wasi-common = { workspace = true }
 wasmparser = "0.208"
 wasmtime = { workspace = true }
