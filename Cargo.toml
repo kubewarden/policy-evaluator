@@ -51,7 +51,7 @@ wapc = "1.1"
 wasi-common = { workspace = true }
 wasmparser = "0.217"
 wasmtime = { workspace = true }
-wasmtime-provider = { version = "1.21.0", features = ["cache"] }
+wasmtime-provider = { version = "2.0.0", features = ["cache"] }
 wasmtime-wasi = { workspace = true }
 
 [workspace.dependencies]
