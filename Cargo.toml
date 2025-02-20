@@ -57,7 +57,7 @@ wasmtime-wasi = { workspace = true }
 
 [workspace.dependencies]
 wasi-common   = "29.0"
-wasmtime      = "29.0"
+wasmtime      = "30.0"
 wasmtime-wasi = "29.0"
 
 [dev-dependencies]
