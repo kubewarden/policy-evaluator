@@ -57,9 +57,9 @@ wasmtime-provider = { version = "2.8.0", features = ["cache"] }
 wasmtime-wasi = { workspace = true }
 
 [workspace.dependencies]
-wasi-common   = "33.0"
-wasmtime      = "33.0"
-wasmtime-wasi = "33.0"
+wasi-common   = "34.0"
+wasmtime      = "34.0"
+wasmtime-wasi = "34.0"
 
 [dev-dependencies]
 assert-json-diff = "2.0"
