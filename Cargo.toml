@@ -29,7 +29,10 @@ kube = { version = "2.0.0", default-features = false, features = [
   "runtime",
   "rustls-tls",
 ] }
-kubewarden-policy-sdk = { version = "0.14", features = ["crd"] }
+# kubewarden-policy-sdk = { version = "0.14", features = ["crd"] }
+kubewarden-policy-sdk = { git = "https://github.com/jvanz/policy-sdk-rust", branch = "fix-crypto-response-payload", features = [
+  "crd",
+] }
 lazy_static = "1.5"
 mail-parser = { version = "0.11", features = ["serde"] }
 picky = { version = "7.0.0-rc.8", default-features = false, features = [
