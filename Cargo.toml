@@ -54,14 +54,14 @@ url = { version = "2.5", features = ["serde"] }
 validator = { version = "0.20", features = ["derive"] }
 wapc = "2.1"
 wasi-common = { workspace = true }
-wasmparser = "0.243"
+wasmparser = "0.244"
 wasmtime = { workspace = true }
 wasmtime-provider = { version = "2.13.0", features = ["cache"] }
 wasmtime-wasi = { workspace = true }
 webpki-roots = "1"
 
 [workspace.dependencies]
-k8s-openapi           = { version = "0.26.0", default-features = false }
+k8s-openapi           = { version = "0.27.0", default-features = false }
 kubewarden-policy-sdk = { version = "0.15.0" }
 lazy_static           = "1.5"
 serde                 = { version = "1.0", features = ["derive"] }
