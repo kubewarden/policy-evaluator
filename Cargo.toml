@@ -25,7 +25,7 @@ futures = "0.3"
 itertools = "0.14"
 json-patch = "4.0"
 k8s-openapi = { workspace = true }
-kube = { version = "2.0.0", default-features = false, features = [
+kube = { version = "3.0.0", default-features = false, features = [
   "client",
   "runtime",
   "rustls-tls",
